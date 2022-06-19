@@ -1,0 +1,22 @@
+{
+  "name": "e-commerce-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm start"
+    
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Javiercuin99/E-commerce-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Javiercuin99/E-commerce-back/issues"
+  },
+  "homepage": "https://github.com/Javiercuin99/E-commerce-back#readme"
+}
