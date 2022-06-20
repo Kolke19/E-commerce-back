@@ -1,4 +1,6 @@
 const {Schema , model } = require ('mongoose');
+const bcrypt = require("bcryptjs");
+const validator = require("validator");
 
 const userSchema = new Schema ({
     username:{
@@ -18,18 +20,20 @@ const userSchema = new Schema ({
         required:[true,'El mail es obligatorio'],
         minlength:4,
         maxlength:30,
-        unique: true,
-        validate:
-        {
-            validator:function(email)
-            {
-                const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-                return emailRegex.test(email);
+        unique: [true,'El mail ya esta en uso'],
+        lowercase:true,
+        // validate:
+        // {
+        //     validator:function(email)
+        //     {
+        //         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+        //         return emailRegex.test(email);
 
                 
-            },
-            message: 'El valor {value} no es un email valido'
-        }
+        //     },
+        //     message: 'El valor {value} no es un email valido'
+        // }
+        validate:[validator.isEmail,"Por favor, introduzca un mail valido"]
     },
     password: {
         type:String,
@@ -40,10 +44,16 @@ const userSchema = new Schema ({
     passwordConfirm:{
         type:String,
         required: [true, 'Por favor confirme su contraseña'],
-        validate:function(value){
-            return value === this.password;
-        },
-        message: 'Los passwords no coinciden'
+        // validate:function(value){
+        //     return value === this.password;
+        // },
+        // message: 'Los passwords no coinciden'
+        validate:{
+            validator: function (value){
+                return value === this.password 
+            },
+            message: "Las contraseñas no hacen match"
+        }
     },
     isadmin:{
         type:Boolean,
@@ -53,6 +63,13 @@ const userSchema = new Schema ({
 
 })
 
+userSchema.pre('save', async function (next){
+        if(!this.isModified('password'))return next();
+        this.password = await bcrypt.hash(this.password,10);
+        this.passwordConfirm= undefined;
+        next();
+})
+
 const User = model('User', userSchema);
 
-module.exports = User;
+module.exports = User;  
