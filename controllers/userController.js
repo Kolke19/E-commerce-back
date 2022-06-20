@@ -36,6 +36,7 @@ exports.updateUser = async (req, res) => {
 
 exports.createUser = async (req, res )=>{
     try{
+
         const user = new User({...req.body});
         const savedUser = await user.save();
         return res.status(201).json({message: 'El usuario se creo existosamente', user: savedUser});
