@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json({limit:'10kb'}));
- app.use('/api/v1/users', userRouter);
+app.use('/api/v1/users', userRouter);
 
  // app.use('/api/v1/products',);
 // app.use('/api/v1/purchases',);
