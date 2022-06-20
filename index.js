@@ -1,7 +1,23 @@
-const express = require ('express')
+const express = require ('express');
+const dotenv = require ('dotenv');
+const connectDb = require('./config/db')
+
+
+
+connectDb(); 
+dotenv.config();
 
 const app = express();
 
-app.listen('4000', () =>{
-    console.log('servidor corriendo');
+app.use(express.json({limit:'10kb'}));
+
+// app.use('/api/v1/products',);
+// app.use('/api/v1/users',);
+// app.use('/api/v1/purchases',);
+
+app.use('/', (req, res ) => res.send('home '));
+console.log(process.env.PORT);
+const port = process.env.PORT || 4500;
+app.listen(port, () =>{
+    console.log(`servidor corriendo ${port}`);
 })
