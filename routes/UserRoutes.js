@@ -1,8 +1,12 @@
-// const {Router}  = required ('express');
+const {Router}  = require ('express');
+const {getUsers , createUser} = require ('../controllers/userController');
 
-// const router = Router();
 
-// router.route('/').get()
+const router = Router();
 
-// module.exports = router;
+router.route('/')
+.get(getUsers)
+.post(createUser)
+
+module.exports = router;
 

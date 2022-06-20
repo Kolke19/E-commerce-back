@@ -1,7 +1,7 @@
 const express = require ('express');
 const dotenv = require ('dotenv');
 const connectDb = require('./config/db')
-
+const userRouter = require('./routes/userRoutes')
 
 
 connectDb(); 
@@ -10,9 +10,9 @@ dotenv.config();
 const app = express();
 
 app.use(express.json({limit:'10kb'}));
+ app.use('/api/v1/users', userRouter);
 
-// app.use('/api/v1/products',);
-// app.use('/api/v1/users',);
+ // app.use('/api/v1/products',);
 // app.use('/api/v1/purchases',);
 
 app.use('/', (req, res ) => res.send('home '));
