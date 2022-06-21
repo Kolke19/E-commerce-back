@@ -55,7 +55,7 @@ const userSchema = new Schema ({
             message: "Las contraseñas no hacen match"
         }
     },
-    isadmin:{
+    isAdmin:{
         type:Boolean,
         default: false
     },

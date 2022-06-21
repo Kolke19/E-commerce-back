@@ -1,14 +1,14 @@
 const {Router}  = require ('express');
 const {getUsers , createUser, deleteUser,getUserById,updateUser} = require ('../controllers/userController');
-
+const {isAdmin} = require ('../middleware/isAdmin') 
 
 const router = Router();
 
 router.route('/')
-.get(getUsers)
+.get(isAdmin ,getUsers)
 .post(createUser)
 router.route("/:id")
-.delete(deleteUser)
+.delete(isAdmin, deleteUser)
 .put(updateUser)
 .get(getUserById)
 
