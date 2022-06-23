@@ -22,32 +22,18 @@ const userSchema = new Schema ({
         maxlength:30,
         unique: [true,'El mail ya esta en uso'],
         lowercase:true,
-        // validate:
-        // {
-        //     validator:function(email)
-        //     {
-        //         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-        //         return emailRegex.test(email);
-
-                
-        //     },
-        //     message: 'El valor {value} no es un email valido'
-        // }
         validate:[validator.isEmail,"Por favor, introduzca un mail valido"]
     },
     password: {
         type:String,
         required:[true,'El password es obligatorio'],
         minlength:8,
-        maxlength:45
+        maxlength:45,
+        select: false
     },
     passwordConfirm:{
         type:String,
         required: [true, 'Por favor confirme su contraseña'],
-        // validate:function(value){
-        //     return value === this.password;
-        // },
-        // message: 'Los passwords no coinciden'
         validate:{
             validator: function (value){
                 return value === this.password 
@@ -59,7 +45,12 @@ const userSchema = new Schema ({
         type:Boolean,
         default: false
     },
-    passwordChangedAt: Date
+    passwordChangedAt: Date,
+    role: {
+        type: String,
+        enum: ['user','sales','admin'],
+        default: "user"
+    }
 
 })
 
@@ -68,7 +59,20 @@ userSchema.pre('save', async function (next){
         this.password = await bcrypt.hash(this.password,10);
         this.passwordConfirm= undefined;
         next();
-})
+});
+userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
+        return await bcrypt.compare (candidatePassword, userPassword);
+}
+userSchema.methods.comparePaswword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+}
+userSchema.methods.changedPasswordAfter = function (JWTTime) {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(this.passwordChangedAt.getTime() /1000);
+        return JWTime < changedTimestamp; 
+    }
+    return false;
+}
 
 const User = model('User', userSchema);
 
