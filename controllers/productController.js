@@ -1,8 +1,9 @@
 const Product = require('../models/Product');
 
 //controlador para traer todos los productos 
-exports.getProducts = async (req, res) => {
+exports.getProducts = async (req, res) => {  
   try {
+    // console.log('current user ===>', req.user)//usuario logueado actualmente con el cual validamos para poder acce
     const products = await Product.find({});
     return res.status(200).json({ ok: true, products });
   } catch (error) {
@@ -62,7 +63,7 @@ exports.deleteProduct = async (req, res) => {
     try {
         const productDeleted = await Product.findById(id)//busca y encontra el id del product y alamac en la const
         await Product.findByIdAndDelete(id)//
-        return res.status(200).json ({ok:true, message:`el producto ${id} fue eliminado con exitos`,
+        return res.status(200).json ({ok:true, message:`el producto ${id} fue eliminado con exito`,
          productDeleted:productDeleted})
     } catch{
 

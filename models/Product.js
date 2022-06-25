@@ -52,3 +52,5 @@ const productSchema = new Schema ({
 const Product = model('Product', productSchema);
 
 module.exports = Product;
+
+//mouse teclado proce, fuente joystick y gpu.

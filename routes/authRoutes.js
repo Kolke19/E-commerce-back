@@ -1,7 +1,20 @@
 const {Router} = require ('express');
-const {signup, login} = require ('../controllers/authController')
+const {signup, login, forgotPassword, resetPassword} = require ('../controllers/authController')
+
+
 const router = Router();
+
+
 router.route('/signup').post(signup); 
+
+
 router.route('/login').post (login);
 
-module.exports = router;
+
+router.route('/forgotPassword').post(forgotPassword); // crear un token random que sera un token 
+
+
+router.route('/resetPassword/:token').post(resetPassword); 
+
+
+module.exports = router; 
