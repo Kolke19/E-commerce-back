@@ -108,3 +108,16 @@ exports.forgotPassword = async (req, res ) => {
         res.status(500).json ({ok:false, err: "error forgot pass"});
     }
  }
+
+ //truta para obtener usuario
+
+ exports.getUser = async (req, res) => {
+    try {
+        if(req.user) {
+            return res.status(200).json({user: req.user})
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ok: false, error})
+    }
+ }
