@@ -24,7 +24,7 @@ app.use('/api/v1/products',productRoutes);
 
 app.use('/', (req, res ) => res.send('home '));
 console.log(process.env.PORT);
-const port = process.env.PORT || 7500;
+const port = process.env.PORT || 4000;
 app.listen(port, () =>{
     console.log(`servidor corriendo ${port}`);
 })
