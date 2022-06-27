@@ -60,3 +60,28 @@ exports.deleteUser = async (req, res) => {
         
     }
 }
+
+exports.updateMe = async (req,res )=>{
+    try{
+        console.log('Req FILE ===>', req.file);
+        if(req.body.password || req.body.passwordConfirm || req.body.role){
+            return res.status(400).json({message: 'Bad request', ok: false}); 
+        }
+        const filteredBody = { name : req.body.name, email: req.body.email};
+        const updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody,{
+            new: true,
+            runValidators:true
+        });
+        return res.status(200).json ({
+            ok:false, 
+            data:{
+                user: updatedUser
+            }    
+        })
+        
+    } catch (error){
+
+        return res.status(500).json ({ message:"algo salio mal",ok:false })
+        
+    }
+}

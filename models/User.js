@@ -15,6 +15,7 @@ const userSchema = new Schema ({
         maxlength: 30,
         required: [true, 'Por favor ingresar un apellido de usuario']
     },
+    photo:String,
     email:{
         type:String,
         required:[true,'El mail es obligatorio'],
