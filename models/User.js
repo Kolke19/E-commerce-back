@@ -2,6 +2,8 @@ const {Schema , model } = require ('mongoose');
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 
+const crypto = require('crypto');
+
 const userSchema = new Schema ({
     username:{
         type: String,
@@ -23,32 +25,18 @@ const userSchema = new Schema ({
         maxlength:30,
         unique: [true,'El mail ya esta en uso'],
         lowercase:true,
-        // validate:
-        // {
-        //     validator:function(email)
-        //     {
-        //         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-        //         return emailRegex.test(email);
-
-                
-        //     },
-        //     message: 'El valor {value} no es un email valido'
-        // }
         validate:[validator.isEmail,"Por favor, introduzca un mail valido"]
     },
     password: {
         type:String,
         required:[true,'El password es obligatorio'],
         minlength:8,
-        maxlength:45
+        maxlength:45,
+        select: false
     },
     passwordConfirm:{
         type:String,
         required: [true, 'Por favor confirme su contraseña'],
-        // validate:function(value){
-        //     return value === this.password;
-        // },
-        // message: 'Los passwords no coinciden'
         validate:{
             validator: function (value){
                 return value === this.password 
@@ -60,8 +48,14 @@ const userSchema = new Schema ({
         type:Boolean,
         default: false
     },
-    passwordChangedAt: Date
-
+    role: {
+        type: String,
+        enum: ['user','sales','admin'],
+        default: "user"
+    },
+    passwordChangedAt: Date,
+    passwordResetToken:String,
+    passwordResetExpires: Date
 })
 
 userSchema.pre('save', async function (next){
@@ -69,7 +63,36 @@ userSchema.pre('save', async function (next){
         this.password = await bcrypt.hash(this.password,10);
         this.passwordConfirm= undefined;
         next();
-})
+});
+
+userSchema.pre("save", function (next) {
+    if(!this.isModified('password' ) || this.isNew) return next();
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
+userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
+        return await bcrypt.compare (candidatePassword, userPassword);
+}
+
+userSchema.methods.createPasswordResetToken = function() {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex') 
+    this.passwordResetExpires = Date.now() + 60 * 5 * 1000;
+    return resetToken;
+}
+
+
+
+
+userSchema.methods.changedPasswordAfter = function (JWTTime) {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(this.passwordChangedAt.getTime() /1000);
+        return JWTTime < changedTimestamp; //el token siempre debe de ser menor que el changedtimeStam
+    }
+    return false;
+}
+
+
 
 const User = model('User', userSchema);
 
