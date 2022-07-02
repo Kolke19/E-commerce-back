@@ -22,7 +22,8 @@ exports.getUserById = async (req, res) => {
     }
 }
 
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res) => 
+{
     const {id} = req.params;
     try 
     {
@@ -36,6 +37,7 @@ exports.updateUser = async (req, res) => {
 
 exports.createUser = async (req, res )=>{
     try{
+
         const user = new User({...req.body});
         const savedUser = await user.save();
         return res.status(201).json({message: 'El usuario se creo existosamente', user: savedUser});
@@ -57,5 +59,30 @@ exports.deleteUser = async (req, res) => {
 
         return res.status(500).json ({ok:false, message:"no se encontro ningun user con esa id" })
         
+    }
+}
+
+exports.updateMe = async (req,res )=>{
+    try{
+       if(req.body.password || req.body.passwordConfirm || req.body.role){
+            return res.status(400).json({message: 'Bad requesat', ok: false}); 
+        }
+       const filteredBody = { username : req.body.username, email: req.body.email};
+        
+       if(req.file)filteredBody.photo = req.file.filename;
+
+       const updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody,{
+            new: true,
+            runValidators:true
+        });
+           
+
+        return res.status(200).json ({
+            ok:false, 
+            data:{ user: updatedUser}    
+        })
+        
+    } catch (error){
+        return res.status(500).json ({ message:"algo salio mal",ok:false })
     }
 }
