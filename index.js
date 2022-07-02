@@ -13,7 +13,7 @@ const cors = require ('cors');
 const app = express();
 
 //archivos estaticos 
-app.use(express.static(`${__dirname}/public`))
+app.use(express.static(`${__dirname}/public`));
 
 app.use(express.json({limit:'10kb'}));
 
