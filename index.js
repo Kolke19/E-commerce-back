@@ -12,10 +12,15 @@ dotenv.config();
 const cors = require ('cors');
 const app = express();
 
+//archivos estaticos 
+app.use(express.static(`${__dirname}/public`));
+
+app.use(express.json({limit:'10kb'}));
 
 app.use(cors());
 app.use(express.json({limit:'10kb'}));
 app.use('/api/v1/users', userRoutes);
+
 app.use('/api/v1/auth',authRoutes );
 app.use('/api/v1/products',productRoutes);
 
