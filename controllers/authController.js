@@ -14,15 +14,17 @@ exports.signup = async (req, res) => {
             email: req.body.email,
             photo: req.body.photo,
             password: req.body.password,
-            passwordConfirm: req.body.passwordConfirm
+            passwordConfirm: req.body.passwordConfirm,
+            phoneNumber: req.body.phoneNumber
         });
+        const {name, role, id, email, phoneNumber} = newUser
         const token = signToken(newUser. _id)
-        // console.log(token);
-        return res.status(201).json ({
+
+            return res.status(201).json ({
             ok:true,
             token,
             data: {
-            user: newUser
+            user: {name, role, id, email, phoneNumber}
             }
         });
     } catch (error) {
