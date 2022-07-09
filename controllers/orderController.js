@@ -1,1 +1,1 @@
-const order = requiere('../models/Order');
+// logica de compra 
