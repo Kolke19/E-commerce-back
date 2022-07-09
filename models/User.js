@@ -2,6 +2,8 @@ const {Schema , model } = require ('mongoose');
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 
+const crypto = require('crypto');
+
 const userSchema = new Schema ({
     username:{
         type: String,
@@ -41,17 +43,22 @@ const userSchema = new Schema ({
             message: "Las contraseñas no hacen match"
         }
     },
+    phoneNumber:{
+        type:Number,
+        required: true["javi se la come"]
+    },
     isAdmin:{
         type:Boolean,
         default: false
     },
-    passwordChangedAt: Date,
     role: {
         type: String,
         enum: ['user','sales','admin'],
         default: "user"
-    }
-
+    },
+    passwordChangedAt: Date,
+    passwordResetToken:String,
+    passwordResetExpires: Date
 })
 
 userSchema.pre('save', async function (next){
@@ -60,19 +67,35 @@ userSchema.pre('save', async function (next){
         this.passwordConfirm= undefined;
         next();
 });
+
+userSchema.pre("save", function (next) {
+    if(!this.isModified('password' ) || this.isNew) return next();
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
 userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
         return await bcrypt.compare (candidatePassword, userPassword);
 }
-userSchema.methods.comparePaswword = async function (candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword);
+
+userSchema.methods.createPasswordResetToken = function() {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex') 
+    this.passwordResetExpires = Date.now() + 60 * 5 * 1000;
+    return resetToken;
 }
+
+
+
+
 userSchema.methods.changedPasswordAfter = function (JWTTime) {
     if (this.passwordChangedAt) {
         const changedTimestamp = parseInt(this.passwordChangedAt.getTime() /1000);
-        return JWTime < changedTimestamp; 
+        return JWTTime < changedTimestamp; //el token siempre debe de ser menor que el changedtimeStam
     }
     return false;
 }
+
+
 
 const User = model('User', userSchema);
 

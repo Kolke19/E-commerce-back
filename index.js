@@ -9,9 +9,11 @@ const productRoutes = require ('./routes/ProductRoutes')
 const authRoutes = require ('./routes/authRoutes')
 connectDb(); 
 dotenv.config();
-
+const cors = require ('cors');
 const app = express();
 
+
+app.use(cors());
 app.use(express.json({limit:'10kb'}));
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/auth',authRoutes );
@@ -22,7 +24,7 @@ app.use('/api/v1/products',productRoutes);
 
 app.use('/', (req, res ) => res.send('home '));
 console.log(process.env.PORT);
-const port = process.env.PORT || 4500;
+const port = process.env.PORT || 4000;
 app.listen(port, () =>{
     console.log(`servidor corriendo ${port}`);
 })
