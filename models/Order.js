@@ -1,26 +1,28 @@
 const mongoose = require ('mongoose')
 
-const ordeSchema = new mongoose.Schema ({
+//const {Schema, model} = require ('mongoose');
+
+//const orderSchema = new Schema ({
+const orderSchema = new mongoose.Schema ({
     user:{
-        tpye: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref : 'User'
     },
    items:[
     {
         name: {type: String, required: true},
-        quantity: {type: Number , required: true},
-        image:{ type:String , required:true},
-        price: {tpye:Number , required: true},
+        stock: {type: Number , required: true},
+        price: {type:Number , required: true},
         product: {
-            tpye: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: 'Product'
         }
     }
    ] ,
    totalPrice:{
-    tpye: Number,
+    type: Number,
     required: true,
     default: 0.0
    },
@@ -33,5 +35,8 @@ const ordeSchema = new mongoose.Schema ({
     timestamps:true
 });
 
+//const Order = model('Order', orderSchema);
+
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
+

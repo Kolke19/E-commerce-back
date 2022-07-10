@@ -46,7 +46,7 @@ const userSchema = new Schema ({
     },
     phoneNumber:{
         type:Number,
-        required: true["javi se la come"]
+        required: true["succes"]
     },
     isAdmin:{
         type:Boolean,
