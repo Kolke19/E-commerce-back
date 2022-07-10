@@ -3,6 +3,9 @@ const {getProducts, createProduct, updateProduct, getProductsById, deleteProduct
 const router = Router ();
 // const {isAdmin} = require ('../middleware/isAdmin') 
 const {protect, retristecTo } = require ("../middleware/auth")
+const {uploadProductImages } = require ("../middleware/photos")
+const {resizeProductsPhotos } = require ("../middleware/resize")
+
 
 router.route('/')
 //BORRE PROTECT AGREGAR!!!!

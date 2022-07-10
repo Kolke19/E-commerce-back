@@ -17,6 +17,7 @@ const userSchema = new Schema ({
         maxlength: 30,
         required: [true, 'Por favor ingresar un apellido de usuario']
     },
+    photo:String,
     email:{
         type:String,
         required:[true,'El mail es obligatorio'],
@@ -45,7 +46,7 @@ const userSchema = new Schema ({
     },
     phoneNumber:{
         type:Number,
-        required: true["javi se la come"]
+        required: true["succes"]
     },
     isAdmin:{
         type:Boolean,
@@ -54,7 +55,7 @@ const userSchema = new Schema ({
     role: {
         type: String,
         enum: ['user','sales','admin'],
-        default: "user"
+        default: "admin"
     },
     passwordChangedAt: Date,
     passwordResetToken:String,
