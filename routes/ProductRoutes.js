@@ -6,7 +6,7 @@ const {protect, retristecTo } = require ("../middleware/auth")
 
 router.route('/')
 //BORRE PROTECT AGREGAR!!!!
-    .get(protect, getProducts) //sin isAdmin debido a que qwueremos que los usuarios deben ver los productos
+    .get(getProducts) //sin isAdmin debido a que qwueremos que los usuarios deben ver los productos
     .post(createProduct)
 //middleware van antes de hacer uso de los controladores, por ejemplo = .post(middlewareProductVlidation, createProduct)
 
@@ -17,4 +17,4 @@ router.route('/:id')
 
 module.exports = router;
 
-// retristecTo('admin', 'sales'), solo estos puede ejecutar el metodo delete a un producto
+// retristecTo('admin', 'sales'), solo estos puede ejecutar el metodo delete a un productonp
