@@ -9,7 +9,6 @@ exports.protect = async (req, res, next) => {
         let token;
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ') [1];
-            console.log("hola kolke")
         }
         if(!token) {
             return res.status(401).json({ok: false, msg: "no tiene acceso"})// si no existe tirame un comentario con el status 401
@@ -39,7 +38,6 @@ exports.protect = async (req, res, next) => {
 
 exports.retristecTo = (...roles) => {//...cantidad indefinida de parametros
     return (req, res, next) => {
-        console.log("javi se la ", req.user)
         if(!roles.includes(req.user.role)) {
             return res.status(403).json ({ok: false, msg:'no tiene permisos para realizar esta accion'});//403 forbidden, sin permisos para esto
         }
