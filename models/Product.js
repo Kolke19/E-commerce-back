@@ -39,10 +39,10 @@ const productSchema = new Schema ({
         type:String,
         required:true,
         enum : {
-            values:["placa madre","mouse", 
-            "teclado","auricular","placa de video", "monitor"]
+            values:["Procesador","Mouse",
+            "Teclado","Auricular","Gpu", "Monitor"]
         },
-        default:"placa de video"
+        default:"GPU"
     }
     
 }, {

@@ -29,7 +29,7 @@ exports.getProductsById = async (req, res) => {
 //Controlador para crear producto
 exports.createProduct = async (req, res) => {
     try {
-        const product = new Product ({...req.body, user: req.user._id});
+        const product = new Product ({...req.body});
         const savedProduct = await product.save(); 
         return res.status(201).json({message:"el producto fue guardado exitosamente", product:savedProduct});
     } catch (error) {
