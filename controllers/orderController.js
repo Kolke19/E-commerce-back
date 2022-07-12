@@ -15,10 +15,10 @@ exports.createOrder = async (req, res) => {
 };
 
 //controlador para traer todas las ordes  
-exports.getOrder = async (req, res) => {  
+exports.getOrders = async (req, res) => {  
   try {
-    const order  = await Order.find({});
-    return res.status(200).json({ ok: true, order  });
+    const orders  = await Order.find({});
+    return res.status(200).json({ ok: true, orders  });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Algo salio mal" });
@@ -28,9 +28,11 @@ exports.getOrder = async (req, res) => {
 //controlador para traer una Order por id
 exports.getOrderById = async (req, res) => {
     const {id} = req.params
+    console.log("A2",id);
     try {
-        const orderById = await Order.findById(id)
-        return res.status(200).json({ok:true, orderById  })
+        const order = await Order.findById(id)
+        console.log("A3", order);
+        return res.status(200).json({ok:true, order})
     } catch (error) {
         console.log(error);
         res.status(500).json( {message: 'El servidor ha fallado'} )

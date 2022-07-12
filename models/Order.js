@@ -9,9 +9,11 @@ const orderSchema = new mongoose.Schema ({
         required: true,
         ref : 'User'
     },
-   items:[
+   products:[
     {
         name: {type: String, required: true},
+        brand: {type: String, required: true},
+        category: {type: String, required: true},
         stock: {type: Number , required: true},
         price: {type:Number , required: true},
         product: {

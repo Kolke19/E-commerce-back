@@ -1,19 +1,21 @@
 const {Router}  = require ('express');
-const { getOrder,createOrder,getOrderById,deleteOrder,updateOrder} = require ('../controllers/orderController');
-const {protect, retristecTo } = require ("../middleware/auth")
+const { getOrders,createOrder,getOrderById,deleteOrder,updateOrder} = require ('../controllers/orderController');
+const {protect, retristecTo } = require ("../middleware/auth");
 
 
 const router = Router();
 
 router.route('/')
-.get(getOrder)
-.post(protect,createOrder)
+.get(getOrders)
+// .post(protect,createOrder)
+.post(createOrder)
 
 
 
 router.route("/:id")
 .put(updateOrder)
-.get(protect,getOrderById)
+// .get(protect,getOrderById)
+.get(getOrderById)
 .delete(deleteOrder)
 
 module.exports = router;
