@@ -14,9 +14,9 @@ router.route('/')
 //middleware van antes de hacer uso de los controladores, por ejemplo = .post(middlewareProductVlidation, createProduct)
 
 router.route('/:id')
-.put (updateProduct)
+.put (protect,updateProduct)
 .get(getProductsById)
-.delete(protect, retristecTo('sales', 'admin'), deleteProduct)//solo los usuarios admin puedan borrar productos
+.delete(protect, retristecTo('sales', 'admin'),deleteProduct)//solo los usuarios admin puedan borrar productos  protect, retristecTo('sales', 'admin'),
 
 module.exports = router;
 

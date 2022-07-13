@@ -1,5 +1,6 @@
 const User = require ('../models/User');
 const { findById } = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 
 exports.getUsers  = async (req, res) => {
@@ -84,5 +85,31 @@ exports.updateMe = async (req,res )=>{
         
     } catch (error){
         return res.status(500).json ({ message:"algo salio mal",ok:false })
+    }
+}
+
+exports.changePassword = async (req , res ) => {
+    try{
+        const id = req.user._id
+        const userBack = await User.findById(id).select("+password");
+        const bandera= await userBack.comparePassword(req.body.currentPassword,userBack.password)
+        if(!bandera){
+            return res.status(201).json({ok:fase, message:"password incorrect"});
+        }
+        if(req.body.newPassword!==req.body.newPasswordConfirm){
+            return res.status(201).json({ok:false, message:"newPassword and newPasswordConfirm don't match"})
+        }
+        passwordHash = await bcrypt.hash(req.body.newPassword,10);
+        const newPassword ={ password: passwordHash} 
+        
+        await User.findByIdAndUpdate(id,newPassword,{
+            new: true,
+            runValidators:true
+        })
+        return res.status(200).json({ok:true, message:"usuario Modificado"});
+        
+    }catch(error){  
+        console.log(error)
+        return res.status(500).json({ok:false, message: "anything went wrong"})
     }
 }

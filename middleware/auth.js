@@ -7,10 +7,14 @@ require('dotenv').config();
 exports.protect = async (req, res, next) => {
     try {
         let token;
-        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-            token = req.headers.authorization.split(' ') [1];
+        // console.log("llega",req.headers);
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            token = req.headers.authorization.split(' ')[1];
+            console.log("ingresa al if");
+            
         }
         if(!token) {
+            console.log("llega?", token);
             return res.status(401).json({ok: false, msg: "no tiene acceso"})// si no existe tirame un comentario con el status 401
         }
         //validar el token con JWT

@@ -40,7 +40,7 @@ const productSchema = new Schema ({
         required:true,
         enum : {
             values:["Procesador","Mouse",
-            "Teclado","Auricular","Gpu", "Monitor"]
+            "Teclado","Auricular","GPU", "Monitor"]
         },
         default:"GPU"
     }

@@ -60,6 +60,7 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
     const {id} = req.params;
+    console.log("d2",req.params)
     try {
         const productDeleted = await Product.findById(id)//busca y encontra el id del product y alamac en la const
         await Product.findByIdAndDelete(id)//

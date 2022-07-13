@@ -31,7 +31,7 @@ const userSchema = new Schema ({
         type:String,
         required:[true,'El password es obligatorio'],
         minlength:8,
-        maxlength:45,
+        maxlength:100,
         select: false
     },
     passwordConfirm:{
